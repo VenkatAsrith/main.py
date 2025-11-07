@@ -1,0 +1,44 @@
+# 1️⃣ Update system packages
+sudo apt update -y
+sudo apt upgrade -y
+
+# 2️⃣ Install Java 17 (Jenkins requires Java 17 or higher)
+sudo apt install openjdk-17-jdk -y
+
+# Verify Java version
+java -version
+
+# 3️⃣ (Optional) Set Java 17 as default if multiple versions exist
+sudo update-alternatives --config java
+# 👉 Select the number corresponding to Java 17
+
+# 4️⃣ Add Jenkins GPG key (latest keyring method)
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+# 5️⃣ Add Jenkins repository to system sources
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | \
+  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# 6️⃣ Update package index to recognize new Jenkins repo
+sudo apt update -y
+
+# 7️⃣ Install Jenkins
+sudo apt install jenkins -y
+
+# 8️⃣ Enable Jenkins service on system boot
+sudo systemctl enable jenkins
+
+# 9️⃣ Start Jenkins service
+sudo systemctl start jenkins
+
+# 🔟 Check Jenkins service status
+sudo systemctl status jenkins
+
+# 1️⃣1️⃣ Get the initial admin password (needed for first-time login)
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+# 1️⃣2️⃣ (Optional) Access Jenkins Web UI
+# Open browser and go to:
+# http://localhost:8080
